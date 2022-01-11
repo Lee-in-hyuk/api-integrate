@@ -1,6 +1,6 @@
 import Counter from './components/Counter';
 import UserList from './components/UserList';
-import { useState, useRef, useReducer } from 'react';
+import React, { useState, useRef, useReducer } from 'react';
 import CreateUser from './components/CreateUser';
 import useInputs from './hooks/useInputs';
 import './App.css';
@@ -59,6 +59,9 @@ function reducer(state,action){
   }
   return state;
 }
+
+//UserDispatch라는 Context를 생성하고 내보내기
+export const UserDispatch = React.createContext(null);
 
 function App() {
   // const { username, userage } = state.inputs;
@@ -138,11 +141,14 @@ function App() {
   // }
 
   return (
-    <div className="App">
-      {/* <Counter/> */}
-      <CreateUser username={username} userage={userage} onChange={onChange} onCreate={onCreate}/>
-      <UserList users={users} onToggle={onToggle} onDelete={onDelete}/>
-    </div>
+    <UserDispatch.Provider value={dispatch}>
+      <div className="App">
+        {/* <Counter/> */}
+        <CreateUser username={username} userage={userage} onChange={onChange} onCreate={onCreate}/>
+        {/* <UserList users={users} onToggle={onToggle} onDelete={onDelete}/> UserDispatch를 써서 토글과 딜리트는 지움*/}
+        <UserList users={users}/>
+      </div>
+    </UserDispatch.Provider>
   );
 }
 
