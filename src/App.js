@@ -10,10 +10,10 @@ const initialState = {
     userage:''
   },
   users: [
-    { id:1, username: "그린", age:30},
-    { id:2, username: "블루", age:18},
-    { id:3, username: "레드", age:22},
-    { id:4, username: "하양", age:28},
+    { id:1, username: "그린", age:30, member:false},
+    { id:2, username: "블루", age:18, member:false},
+    { id:3, username: "레드", age:22, member:false},
+    { id:4, username: "하양", age:28, member:false},
   ]
 }
 function reducer(state,action){
@@ -38,6 +38,18 @@ function reducer(state,action){
           ...state.users,
           action.user
         ]
+      }
+    case 'MEMBER_TOGGLE':
+      return {
+        inputs:state.inputs,
+        users: state.users.map(user=>
+          user.id === action.id ? {...user, member:!user.member } : user  
+        )
+      }
+    case 'MEMBER_DELETE':
+      return {
+        inputs:state.inputs,
+        users: state.users.filter(user=> user.id !== action.id )
       }
     default:
       return state;
@@ -71,6 +83,18 @@ function App() {
         }
       })
       nextId.current = nextId.current+1;
+    }
+    function onToggle(id){
+      dispatch({
+        type:'MEMBER_TOGGLE',
+        id:id
+      })
+    }
+    function onDelete(id){
+      dispatch({
+        type:'MEMBER_DELETE',
+        id
+      })
     }
 
   //useState로 만들었을 때 !!!!!!!!!
@@ -109,7 +133,7 @@ function App() {
     <div className="App">
       {/* <Counter/> */}
       <CreateUser username={username} userage={userage} onChange={onChange} onCreate={onCreate}/>
-      <UserList users={users}/>
+      <UserList users={users} onToggle={onToggle} onDelete={onDelete}/>
     </div>
   );
 }
