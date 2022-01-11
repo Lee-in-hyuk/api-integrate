@@ -2,13 +2,15 @@ import Counter from './components/Counter';
 import UserList from './components/UserList';
 import { useState, useRef, useReducer } from 'react';
 import CreateUser from './components/CreateUser';
+import useInputs from './hooks/useInputs';
 import './App.css';
 
 const initialState = {
-  inputs: {
-    username:'',
-    userage:''
-  },
+  // hook으로 inputs는 만들어놔서 이건지움.
+  // inputs: {
+  //   username:'',
+  //   userage:''
+  // },
   users: [
     { id:1, username: "그린", age:30, member:false},
     { id:2, username: "블루", age:18, member:false},
@@ -22,17 +24,18 @@ function reducer(state,action){
   //return의 내용
   //state는 그대로 두고, inputs의 값에서 name값이 value로 반환
   switch(action.type){
-    case 'CHANGE_INPUT':
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          [action.name]:action.value
-        }
-      };
+    //훅으로 만들어놔서 지워도 됨.
+    // case 'CHANGE_INPUT':
+    //   return {
+    //     ...state,
+    //     inputs: {
+    //       ...state.inputs,
+    //       [action.name]:action.value
+    //     }
+    //   };
     case 'CREATE_USER':
       return {
-        inputs: state.inputs,
+        // inputs: state.inputs, //훅으로 만들어놔서 지워도 됨.
         //state.users는 그대로 두고, action.user를 추가하겠다.
         users:[
           ...state.users,
@@ -41,14 +44,14 @@ function reducer(state,action){
       }
     case 'MEMBER_TOGGLE':
       return {
-        inputs:state.inputs,
+        // inputs:state.inputs, //훅으로 만들어놔서 지워도 됨.
         users: state.users.map(user=>
           user.id === action.id ? {...user, member:!user.member } : user  
         )
       }
     case 'MEMBER_DELETE':
       return {
-        inputs:state.inputs,
+        // inputs:state.inputs, //훅으로 만들어놔서 지워도 됨.
         users: state.users.filter(user=> user.id !== action.id )
       }
     default:
@@ -58,21 +61,26 @@ function reducer(state,action){
 }
 
 function App() {
+  // const { username, userage } = state.inputs;
+  const [ { username, userage }, onChange, reset ] = useInputs({
+    username:'',
+    userage:''
+  })
   //redux로 만들 때 !!!!!!! 위에 initialState랑 reducer함수도 포함
   const [ state, dispatch ] = useReducer(reducer, initialState);
   const { users } = state; //state에 담긴 users만 구조분해할당으로 변수로 만듬.
-  const { username, userage } = state.inputs;
   const nextId = useRef(5);
 
-  function onChange(e){
-    const { name,value } = e.target;
-    //dispatch를 써서 reducer함수를 발동시킴. 이 때 type을 지정해서 스위치문에 조건을 걸어줌.
-    dispatch({
-      type: 'CHANGE_INPUT',
-      name: name,
-      value:value
-    })
-  }
+  //훅으로 만들어놔서 지워도 됨. (useInputs.js에)
+  // function onChange(e){
+  //   const { name,value } = e.target;
+  //   //dispatch를 써서 reducer함수를 발동시킴. 이 때 type을 지정해서 스위치문에 조건을 걸어줌.
+  //   dispatch({
+  //     type: 'CHANGE_INPUT',
+  //     name: name,
+  //     value:value
+  //   })
+  // }
   function onCreate(){
       dispatch({
         type: 'CREATE_USER',
