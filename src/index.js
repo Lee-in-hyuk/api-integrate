@@ -1,12 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App2 from './App2';
 import reportWebVitals from './reportWebVitals';
-
+// import App2 from './App2';
+// import ContextExam from './ContextExam';
+// import PersonContext from './contexts/PersonContext'
+import ApiExam from './ApiExam';
+// const persons = [
+//   { id:1, name:'green', age:20 },
+//   { id:1, name:'blue', age:22 },
+// ]
 ReactDOM.render(
   <React.StrictMode>
-    <App2 />
+    {/* <PersonContext.Provider value={persons}>
+      <ContextExam/>
+    </PersonContext.Provider> */}
+    <ApiExam/>
   </React.StrictMode>,
   document.getElementById('root')
 );
