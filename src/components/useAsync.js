@@ -1,4 +1,5 @@
 // useAsync라는 훅을 만들어서 이걸로 계속 사용
+// 파일명을 소문자로 시작하면 보통 훅 파일.
 
 import React, { useReducer, useEffect} from 'react';
 
